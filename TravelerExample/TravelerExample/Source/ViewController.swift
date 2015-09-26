@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import Traveler
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, TravelerOAuthViewControllerDelegate {
+
+    // MARK: - Override
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,6 +19,25 @@ class ViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+
+    // MARK: - Private
+
+    @IBAction func login() {
+        let authViewController = TravelerOAuthViewController()
+        authViewController.delegate = self
+        self.navigationController?.pushViewController(authViewController, animated: true)
+    }
+
+    // MARK: - TravelerOAuthViewControllerDelegate
+
+    func viewControllerDidFinishAuthorization(viewController: TravelerOAuthViewController) {
+        self.navigationController?.popToRootViewControllerAnimated(true)
+    }
+
+    func viewController(viewController: TravelerOAuthViewController, didFinishAuthorizationWithError error:NSError) {
+        let localizedDescription = error.userInfo["NSLocalizedDescriptionKey"]
+        print("\(localizedDescription)")
     }
 
 }

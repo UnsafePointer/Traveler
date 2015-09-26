@@ -7,10 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DA9B7AE01BB6EE9400FE4F83 /* Traveler.h in Headers */ = {isa = PBXBuildFile; fileRef = DA9B7ADE1BB6EE9400FE4F83 /* Traveler.h */; settings = {ASSET_TAGS = (); }; };
+		DA8EC9121BB7324100E88A4E /* Traveler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8EC9111BB7324100E88A4E /* Traveler.swift */; settings = {ASSET_TAGS = (); }; };
+		DA8EC92B1BB7350B00E88A4E /* TravelerOAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8EC92A1BB7350B00E88A4E /* TravelerOAuthViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		DA9B7AE01BB6EE9400FE4F83 /* Traveler.h in Headers */ = {isa = PBXBuildFile; fileRef = DA9B7ADE1BB6EE9400FE4F83 /* Traveler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA8EC9111BB7324100E88A4E /* Traveler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Traveler.swift; path = Source/Traveler.swift; sourceTree = "<group>"; };
+		DA8EC92A1BB7350B00E88A4E /* TravelerOAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TravelerOAuthViewController.swift; path = Source/TravelerOAuthViewController.swift; sourceTree = "<group>"; };
 		DA9B7AA31BB6EBE100FE4F83 /* Traveler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Traveler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA9B7ADD1BB6EE9400FE4F83 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Support/Info.plist; sourceTree = "<group>"; };
 		DA9B7ADE1BB6EE9400FE4F83 /* Traveler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Traveler.h; path = Support/Traveler.h; sourceTree = "<group>"; };
@@ -64,6 +68,8 @@
 		DA9B7ADC1BB6EE7400FE4F83 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				DA8EC92A1BB7350B00E88A4E /* TravelerOAuthViewController.swift */,
+				DA8EC9111BB7324100E88A4E /* Traveler.swift */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -106,6 +112,7 @@
 		DA9B7A9A1BB6EBE100FE4F83 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = Ruenzuo.io;
 				TargetAttributes = {
@@ -146,6 +153,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA8EC9121BB7324100E88A4E /* Traveler.swift in Sources */,
+				DA8EC92B1BB7350B00E88A4E /* TravelerOAuthViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +253,7 @@
 		DA9B7AAC1BB6EBE200FE4F83 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -254,12 +264,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ruenzuo.Traveler;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		DA9B7AAD1BB6EBE200FE4F83 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;

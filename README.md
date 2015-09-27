@@ -1,5 +1,9 @@
 # Traveler
 
+<p align="center">
+  <img src="https://dl.dropboxusercontent.com/u/12352209/GitHub/Traveler.png" alt="Traveler image"/>
+</p>
+
 > "Everything changed with the coming of the Traveler.
 > 
 > It gave us gifts that transformed the solar system and the nature of human life. It ushered in the Golden Age, a time of miracles. But it never shared its deepest secrets."

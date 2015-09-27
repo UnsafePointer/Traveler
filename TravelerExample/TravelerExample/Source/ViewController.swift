@@ -11,6 +11,8 @@ import Traveler
 
 class ViewController: UIViewController, TravelerOAuthViewControllerDelegate {
 
+    @IBOutlet var messageLabel: UILabel?
+
     // MARK: - Override
 
     override func viewDidLoad() {
@@ -34,8 +36,22 @@ class ViewController: UIViewController, TravelerOAuthViewControllerDelegate {
     func viewControllerDidFinishAuthorization(viewController: TravelerOAuthViewController) {
         self.navigationController?.popToRootViewControllerAnimated(true)
         do {
-            try Traveler.currentUserWithCompletion { (user) in
-                print("\(user)")
+            try Traveler.currentUserWithCompletion { (maybeCurrentUser, error) in
+                guard let currentUser = maybeCurrentUser else {
+                    return
+                }
+                guard let response: NSDictionary = currentUser["Response"] as? NSDictionary else {
+                    return
+                }
+                guard let user: NSDictionary = response["user"] as? NSDictionary else {
+                    return
+                }
+                guard let displayName: String = user["displayName"] as? String else {
+                    return
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.messageLabel?.text = "Welcome \(displayName)"
+                }
             }
         } catch {
             print("Whoops")

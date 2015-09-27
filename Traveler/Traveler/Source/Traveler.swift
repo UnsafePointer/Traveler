@@ -9,6 +9,7 @@
 import Foundation
 
 public struct TravelerConstants {
+
     enum ErrorDomain: String {
         case Authorization = "TravelerErrorDomainAuthorization"
         case UserService = "TravelerErrorDomainUserService"
@@ -19,10 +20,7 @@ public struct TravelerConstants {
         static let CookiesNotFound = 9997
         static let SerializationFailed = 9996
     }
-}
 
-public enum TravelerError: ErrorType {
-    case RequestFailed(error: NSError?)
 }
 
 extension NSHTTPCookieStorage {
@@ -44,7 +42,10 @@ extension NSHTTPCookieStorage {
 public class Traveler {
 
     static let baseURL = NSURL(string: "https://www.bungie.net/platform")
+
     public static var APIKey: String?
+
+    // MARK: - Private
 
     class func wrongURLErrorWithDomain(domain: TravelerConstants.ErrorDomain) -> NSError {
         let error = NSError(domain: domain.rawValue,
@@ -74,30 +75,41 @@ public class Traveler {
         return error
     }
 
-    public class func currentUserWithCompletion(completion: (NSDictionary?, NSError?) -> ()) throws  {
-        guard let URL = baseURL?.URLByAppendingPathComponent("User/GetBungieNetUser/") else {
-            throw TravelerError.RequestFailed(error: wrongURLErrorWithDomain(TravelerConstants.ErrorDomain.UserService))
+    class func requestWithPath(path: String) throws -> NSURLRequest {
+        guard let URL = baseURL?.URLByAppendingPathComponent(path) else {
+            throw wrongURLErrorWithDomain(TravelerConstants.ErrorDomain.UserService)
         }
         guard let bungled = NSHTTPCookieStorage.sharedHTTPCookieStorage().valueForCookieName("bungled") else {
-            throw TravelerError.RequestFailed(error: cookiesNotFoundErrorWithDomain(TravelerConstants.ErrorDomain.UserService))
+            throw cookiesNotFoundErrorWithDomain(TravelerConstants.ErrorDomain.UserService)
         }
         let request = NSMutableURLRequest(URL: URL)
         request.setValue(APIKey, forHTTPHeaderField: "X-API-Key")
         request.setValue(bungled, forHTTPHeaderField: "X-CSRF")
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { (maybeData, response, error) in
-            if let data = maybeData {
-                do {
-                    let currentUser = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! NSDictionary
-                    completion(currentUser, nil)
-                } catch {
-                    completion(nil, serializationFailedErrorWithDomain(TravelerConstants.ErrorDomain.UserService))
+        return request
+    }
+
+    // MARK: - Public
+
+    public class func currentUserWithCompletion(completion: (NSDictionary?, NSError?) -> ()) {
+        do {
+            let request = try requestWithPath("User/GetBungieNetUser/")
+            let session = NSURLSession.sharedSession()
+            let task = session.dataTaskWithRequest(request) { (maybeData, maybeResponse, maybeError) in
+                if let data = maybeData {
+                    do {
+                        let currentUser = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? NSDictionary
+                        completion(currentUser, nil)
+                    } catch {
+                        completion(nil, error as NSError)
+                    }
+                } else {
+                    completion(nil, maybeError)
                 }
-            } else {
-                completion(nil, error)
             }
+            task.resume()
+        } catch {
+            completion(nil, error as NSError)
         }
-        task.resume()
     }
 
 }

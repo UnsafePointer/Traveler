@@ -35,26 +35,22 @@ class ViewController: UIViewController, TravelerOAuthViewControllerDelegate {
 
     func viewControllerDidFinishAuthorization(viewController: TravelerOAuthViewController) {
         self.navigationController?.popToRootViewControllerAnimated(true)
-        do {
-            try Traveler.currentUserWithCompletion { (maybeCurrentUser, error) in
-                guard let currentUser = maybeCurrentUser else {
-                    return
-                }
-                guard let response: NSDictionary = currentUser["Response"] as? NSDictionary else {
-                    return
-                }
-                guard let user: NSDictionary = response["user"] as? NSDictionary else {
-                    return
-                }
-                guard let displayName: String = user["displayName"] as? String else {
-                    return
-                }
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.messageLabel?.text = "Welcome \(displayName)"
-                }
+        Traveler.currentUserWithCompletion { (maybeCurrentUser, error) in
+            guard let currentUser = maybeCurrentUser else {
+                return
             }
-        } catch {
-            print("Whoops")
+            guard let response: NSDictionary = currentUser["Response"] as? NSDictionary else {
+                return
+            }
+            guard let user: NSDictionary = response["user"] as? NSDictionary else {
+                return
+            }
+            guard let displayName: String = user["displayName"] as? String else {
+                return
+            }
+            dispatch_async(dispatch_get_main_queue()) {
+                self.messageLabel?.text = "Welcome \(displayName)"
+            }
         }
     }
 

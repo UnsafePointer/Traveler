@@ -50,7 +50,7 @@ public class TravelerOAuthViewController: UIViewController, UIWebViewDelegate {
         retrieveCookies()
     }
 
-    // MARK - Private
+    // MARK: - Private
 
     func retrieveCookies() {
         guard let authorizeURL = NSURL(string: PSNAuthorize) else {

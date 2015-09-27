@@ -60,7 +60,11 @@ public class TravelerOAuthViewController: UIViewController, UIWebViewDelegate {
         let authorizeRequest = NSURLRequest(URL: authorizeURL)
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(authorizeRequest) { (data, response, error) in
-            self.login()
+            if let _ = error {
+                self.notifyRequestFailed()
+            } else {
+                self.login()
+            }
         }
         task.resume()
     }
@@ -75,16 +79,17 @@ public class TravelerOAuthViewController: UIViewController, UIWebViewDelegate {
     }
 
     func notifyWrongURL() {
-        let error = NSError(domain: TravelerConstants.ErrorDomain.Authorization,
-            code: TravelerConstants.ErrorCode.WrongURL,
-            userInfo: ["NSLocalizedDescriptionKey" : "URL couldn't be initialised"])
+        let error = Traveler.wrongURLErrorWithDomain(TravelerConstants.ErrorDomain.Authorization)
         self.delegate?.viewController(self, didFinishAuthorizationWithError: error)
     }
 
     func notifyCookiesNotFound() {
-        let error = NSError(domain: TravelerConstants.ErrorDomain.Authorization,
-            code: TravelerConstants.ErrorCode.CookiesNotFound,
-            userInfo: ["NSLocalizedDescriptionKey" : "Couldn't find cookies in shared store"])
+        let error = Traveler.cookiesNotFoundErrorWithDomain(TravelerConstants.ErrorDomain.Authorization)
+        self.delegate?.viewController(self, didFinishAuthorizationWithError: error)
+    }
+
+    func notifyRequestFailed() {
+        let error = Traveler.requestFailedErrorWithDomain(TravelerConstants.ErrorDomain.Authorization)
         self.delegate?.viewController(self, didFinishAuthorizationWithError: error)
     }
 
@@ -118,6 +123,10 @@ public class TravelerOAuthViewController: UIViewController, UIWebViewDelegate {
     public func webViewDidFinishLoad(webView: UIWebView) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         validateCookies()
+    }
+
+    public func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
+        notifyRequestFailed()
     }
 
 }

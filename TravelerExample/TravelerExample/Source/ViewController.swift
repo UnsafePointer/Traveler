@@ -33,6 +33,13 @@ class ViewController: UIViewController, TravelerOAuthViewControllerDelegate {
 
     func viewControllerDidFinishAuthorization(viewController: TravelerOAuthViewController) {
         self.navigationController?.popToRootViewControllerAnimated(true)
+        do {
+            try Traveler.currentUserWithCompletion { (user) in
+                print("\(user)")
+            }
+        } catch {
+            print("Whoops")
+        }
     }
 
     func viewController(viewController: TravelerOAuthViewController, didFinishAuthorizationWithError error:NSError) {

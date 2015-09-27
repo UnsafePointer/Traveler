@@ -15,3 +15,10 @@ Traveler is an API client for Bungie's Destiny API written in Swift. It is prett
 
 * Some endpoints require you to be [authorised](http://bungienetplatform.wikia.com/wiki/API_Details), this is currently handled by a view controller. Not pretty, I know.
 * I'm still learning Swift and this is pretty much my first Framework, so ¯\\_(ツ)_/¯
+
+#### Try it!
+
+1. Get an API key at [bungie.net](https://www.bungie.net/en/User/API).
+2. Use your API key [here](https://github.com/Ruenzuo/Traveler/blob/master/TravelerExample/TravelerExample/Source/AppDelegate.swift#L18).
+3. ???
+4. Profit!
